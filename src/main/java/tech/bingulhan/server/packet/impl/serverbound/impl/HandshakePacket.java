@@ -5,11 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import tech.bingulhan.client.PlayerClient;
+import tech.bingulhan.server.MinecraftServer;
 import tech.bingulhan.server.packet.Packet;
-import tech.bingulhan.server.packet.impl.clientbound.impl.ServerClientStatusPacket;
-import tech.bingulhan.server.packet.impl.clientbound.impl.ServerDisconnectPacket;
-import tech.bingulhan.server.packet.impl.clientbound.impl.ServerJoinPacket;
-import tech.bingulhan.server.packet.impl.clientbound.impl.ServerLoginSuccessPacket;
+import tech.bingulhan.server.packet.impl.clientbound.impl.*;
 import tech.bingulhan.server.packet.impl.serverbound.ServerBoundPacket;
 import tech.bingulhan.server.util.ByteUtil;
 
@@ -65,29 +63,29 @@ public class HandshakePacket extends ServerBoundPacket {
         }else if (nextState == 2) {
 
             int userNameLength = ByteUtil.readVarInt(buf);
-            String userName = buf.readCharSequence(userNameLength, Charset.forName("UTF-8")).toString();
+            String userName = buf.readCharSequence(userNameLength,
+                    Charset.forName("UTF-8")).toString();
 
-            System.out.println(" "+userName);
-
-
-            ServerDisconnectPacket disconnectPacket = new ServerDisconnectPacket(getClient());
-            String jsonResponse = String.format("{\n" +
-                    "  \"text\": \"You have been kicked from the server.\"\n" +
-                    "}");
-
-            disconnectPacket.setMessage(jsonResponse);
-            getClient().sendPacket(disconnectPacket);
-
-            /*
             ServerLoginSuccessPacket serverLoginSuccessPacket = new ServerLoginSuccessPacket(getClient());
             serverLoginSuccessPacket.setUser(userName);
 
             getClient().sendPacket(serverLoginSuccessPacket);
 
-            ServerJoinPacket joinPacket=new ServerJoinPacket(getClient());
+
+
+            ServerJoinPacket joinPacket= new ServerJoinPacket(getClient());
             joinPacket.setData();
 
-            getClient().sendPacket(joinPacket);*/
+
+            getClient().sendPacket(joinPacket);
+
+            ServerPlayerPositionAndLookPacket serverPlayerPositionAndLookPacket =
+                    new ServerPlayerPositionAndLookPacket(getClient());
+
+            serverPlayerPositionAndLookPacket.setData(0,0,0,0,0);
+
+            getClient().sendPacket(serverPlayerPositionAndLookPacket);
+            MinecraftServer.clients.add(getClient());
 
 
         }

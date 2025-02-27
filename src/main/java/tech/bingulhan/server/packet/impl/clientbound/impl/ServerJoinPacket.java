@@ -11,21 +11,28 @@ public class ServerJoinPacket extends ClientBoundPacket {
 
 
     public ServerJoinPacket(PlayerClient client) {
-        super(0x23 ,client);
-        ByteUtil.writeVarInt(getResponseBuffer(), 0x23);
+        super(0x01 ,client);
+        ByteUtil.writeVarInt(getResponseBuffer(), 0x01);
     }
 
     public ServerJoinPacket() {
-        super(0x23);
+        super(0x01);
     }
 
     public void setData() {
 
+        getResponseBuffer().writeInt(0);
+        getResponseBuffer().writeByte(0);
+        getResponseBuffer().writeByte(0);
+        getResponseBuffer().writeByte(0);
+        getResponseBuffer().writeByte(10);
+        ByteUtil.writeString(getResponseBuffer(), "default");
+        getResponseBuffer().writeBoolean(false);
 
     }
 
     @Override
     public Packet doBuild(PlayerClient client) {
-        return new ServerDisconnectPacket(client);
+        return new ServerJoinPacket(client);
     }
 }

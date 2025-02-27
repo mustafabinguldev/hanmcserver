@@ -24,9 +24,12 @@ public class ServerLoginSuccessPacket extends ClientBoundPacket {
 
     public void setUser(String username) {
 
-            UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes());
-            ByteUtil.writeString(getResponseBuffer(), uuid.toString());
-            ByteUtil.writeString(getResponseBuffer(), username);
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes());
+        ByteUtil.writeString(getResponseBuffer(), uuid.toString());
+        ByteUtil.writeString(getResponseBuffer(), username);
+
+        getClient().setPlayerName(username);
+        getClient().setUuid(uuid);
 
 
     }

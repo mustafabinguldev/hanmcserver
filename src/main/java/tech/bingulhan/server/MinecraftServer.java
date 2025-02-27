@@ -8,7 +8,11 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import tech.bingulhan.client.PlayerClient;
 import tech.bingulhan.server.handler.MinecraftProtocolHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MinecraftServer {
@@ -18,6 +22,8 @@ public class MinecraftServer {
         this.port = port;
     }
 
+    public static List<PlayerClient> clients = new ArrayList<>();
+
     public void start() throws InterruptedException {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -26,7 +32,7 @@ public class MinecraftServer {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() { // Yeni bağlantı açıldığında bu metot çağrılır
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ch.pipeline().addLast(new MinecraftProtocolHandler());

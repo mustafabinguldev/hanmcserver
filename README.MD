@@ -23,6 +23,9 @@ cd hanmcserver
 mvn clean package
 ```
 
+![Motd](src/main/resources/motd.png)
+![Screen](src/main/resources/screen.png)
+
 ## Usage
 ```sh
 java -jar target/hanserver.jar

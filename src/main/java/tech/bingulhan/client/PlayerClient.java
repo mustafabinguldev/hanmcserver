@@ -14,12 +14,17 @@ import java.util.UUID;
 @Setter
 public class PlayerClient {
 
-    private String playerName="";
+    private String playerName;
     private UUID uuid;
 
     private ChannelHandlerContext ctx;
+
+    private String socketAddress;
+
     public PlayerClient(ChannelHandlerContext handlerContext) {
         this.ctx = handlerContext;
+
+        this.socketAddress = ctx.channel().remoteAddress().toString();
     }
 
     public void sendPacket(Packet packet) {
