@@ -6,8 +6,10 @@ import io.netty.channel.ChannelHandlerContext;
 import lombok.Getter;
 import lombok.Setter;
 import tech.bingulhan.server.packet.Packet;
+import tech.bingulhan.server.packet.impl.clientbound.impl.ServerKeepAlivePacket;
 import tech.bingulhan.server.util.ByteUtil;
 
+import java.util.TimerTask;
 import java.util.UUID;
 
 @Getter
@@ -20,6 +22,10 @@ public class PlayerClient {
     private ChannelHandlerContext ctx;
 
     private String socketAddress;
+
+    private TimerTask timerTask;
+
+    private GameState state = GameState.LOGIN;
 
     public PlayerClient(ChannelHandlerContext handlerContext) {
         this.ctx = handlerContext;
@@ -36,5 +42,11 @@ public class PlayerClient {
         ctx.writeAndFlush(response);
 
     }
+
+    public enum GameState {
+        LOGIN, PLAY
+    }
+
+
 
 }

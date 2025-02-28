@@ -15,19 +15,24 @@ public abstract class Packet {
     private PacketType type;
 
     @Getter
+    private PacketState state;
+
+    @Getter
     private ByteBuf responseBuffer = Unpooled.buffer();
 
     @Getter
     private PlayerClient client;
-    public Packet(int packetId, PacketType type) {
+    public Packet(int packetId, PacketType type, PacketState state) {
         this.packetId = packetId;
         this.type = type;
+        this.state = state;
     }
 
-    public Packet(int packetId, PacketType type, PlayerClient client) {
+    public Packet(int packetId, PacketType type, PlayerClient client, PacketState state) {
         this.packetId = packetId;
         this.type = type;
         this.client = client;
+        this.state = state;
     }
 
     public Packet() {

@@ -2,6 +2,7 @@ package tech.bingulhan.server.packet.impl.clientbound.impl;
 
 import tech.bingulhan.client.PlayerClient;
 import tech.bingulhan.server.packet.Packet;
+import tech.bingulhan.server.packet.PacketState;
 import tech.bingulhan.server.packet.impl.clientbound.ClientBoundPacket;
 import tech.bingulhan.server.util.ByteUtil;
 
@@ -11,12 +12,12 @@ public class ServerPlayerPositionAndLookPacket extends ClientBoundPacket {
 
 
     public ServerPlayerPositionAndLookPacket(PlayerClient client) {
-        super(0x08 , client);
+        super(0x08 , client, PacketState.PLAY);
         ByteUtil.writeVarInt(getResponseBuffer(), 0x08);
     }
 
     public ServerPlayerPositionAndLookPacket() {
-        super(0x08);
+        super(0x08, PacketState.PLAY);
     }
 
     public void setData(double x, double y, double z, float yaw, float pitch) {

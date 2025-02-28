@@ -4,6 +4,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import tech.bingulhan.client.PlayerClient;
 import tech.bingulhan.server.packet.Packet;
+import tech.bingulhan.server.packet.PacketState;
 import tech.bingulhan.server.packet.impl.clientbound.ClientBoundPacket;
 import tech.bingulhan.server.util.ByteUtil;
 
@@ -14,12 +15,12 @@ public class ServerLoginSuccessPacket extends ClientBoundPacket {
 
 
     public ServerLoginSuccessPacket(PlayerClient client) {
-        super(0x02 ,client);
+        super(0x02 ,client, PacketState.LOGIN);
         ByteUtil.writeVarInt(getResponseBuffer(), 0x02);
     }
 
     public ServerLoginSuccessPacket() {
-        super(0x02);
+        super(0x02, PacketState.LOGIN);
     }
 
     public void setUser(String username) {
@@ -36,6 +37,6 @@ public class ServerLoginSuccessPacket extends ClientBoundPacket {
 
     @Override
     public Packet doBuild(PlayerClient client) {
-        return new ServerDisconnectPacket(client);
+        return new ServerLoginSuccessPacket(client);
     }
 }

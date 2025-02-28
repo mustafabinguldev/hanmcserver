@@ -2,6 +2,7 @@ package tech.bingulhan.server.packet.impl.clientbound.impl;
 
 import tech.bingulhan.client.PlayerClient;
 import tech.bingulhan.server.packet.Packet;
+import tech.bingulhan.server.packet.PacketState;
 import tech.bingulhan.server.packet.impl.clientbound.ClientBoundPacket;
 import tech.bingulhan.server.util.ByteUtil;
 
@@ -11,12 +12,12 @@ public class ServerJoinPacket extends ClientBoundPacket {
 
 
     public ServerJoinPacket(PlayerClient client) {
-        super(0x01 ,client);
+        super(0x01 ,client, PacketState.LOGIN);
         ByteUtil.writeVarInt(getResponseBuffer(), 0x01);
     }
 
     public ServerJoinPacket() {
-        super(0x01);
+        super(0x01, PacketState.LOGIN);
     }
 
     public void setData() {

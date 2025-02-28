@@ -6,27 +6,28 @@ import tech.bingulhan.server.packet.PacketState;
 import tech.bingulhan.server.packet.impl.clientbound.ClientBoundPacket;
 import tech.bingulhan.server.util.ByteUtil;
 
-public class ServerDisconnectPacket extends ClientBoundPacket {
+import java.util.concurrent.ThreadLocalRandom;
 
-    private String json;
+public class ServerKeepAlivePacket extends ClientBoundPacket {
 
-    public ServerDisconnectPacket(PlayerClient client) {
+    private int tlcr = ThreadLocalRandom.current().nextInt(129);
+
+    public ServerKeepAlivePacket(PlayerClient client) {
         super(0x00 ,client, PacketState.LOGIN);
         ByteUtil.writeVarInt(getResponseBuffer(), 0x00);
     }
 
-    public ServerDisconnectPacket() {
+    public ServerKeepAlivePacket() {
         super(0x00, PacketState.LOGIN);
     }
 
-    public void setMessage(String json) {
-        this.json = json;
-        ByteUtil.writeString(getResponseBuffer(), this.json);
+    public ServerKeepAlivePacket setData() {
+        ByteUtil.writeVarInt(getResponseBuffer(), tlcr);
+        return this;
     }
 
     @Override
     public Packet doBuild(PlayerClient client) {
-        return new ServerDisconnectPacket(client);
+        return new ServerKeepAlivePacket(client);
     }
-
 }
