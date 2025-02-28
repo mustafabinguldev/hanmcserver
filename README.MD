@@ -1,6 +1,7 @@
 # Minecraft Server Protocol with Netty
 
 A lightweight implementation of Minecraft server protocol using Netty.
+minecraft protocol: v47 
 
 #
 For now, the project is completely finished and handshake 
