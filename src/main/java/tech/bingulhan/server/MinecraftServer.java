@@ -30,19 +30,30 @@ public class MinecraftServer {
     }
 
     public static List<PlayerClient> clients = new ArrayList<>();
+    public static List<PlayerClient> queryListConnectList = new ArrayList<>();
 
     public void start() throws InterruptedException {
 
         timerTask = new TimerTask() {
             @Override
             public void run() {
+                queryListConnectList.clear();
                 for (PlayerClient playerClient : clients) {
+                    queryListConnectList.add(playerClient);
                     playerClient.sendPacket(new ServerKeepAlivePacket(playerClient).setData());
                 }
+                new Timer("queryTimer").schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        for (PlayerClient client : queryListConnectList) {
+                            clients.remove(client);
+                        }
+                    }
+                }, 1000);
             }
         };
         keepAliveTask = new Timer("keepalive");
-        keepAliveTask.schedule(timerTask, 0, 10000);
+        keepAliveTask.schedule(timerTask, 0, 5000);
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup();

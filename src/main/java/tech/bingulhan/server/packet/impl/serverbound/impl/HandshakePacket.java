@@ -47,8 +47,8 @@ public class HandshakePacket extends ServerBoundPacket {
                 ServerClientStatusPacket serverStatusPacket = new ServerClientStatusPacket(getClient());
                 String serverName = "HanServer";
                 String motd = "HanServer example motd!";
-                int onlinePlayers = 999;
-                int maxPlayers = 100;
+                int onlinePlayers = MinecraftServer.clients.size();
+                int maxPlayers = 999;
                 String version = "1.8.8";
                 String jsonResponse = String.format(
                         "{\"version\":{\"name\":\"%s\",\"protocol\":47},\"players\":{\"max\":%d,\"online\":%d},\"description\":{\"text\":\"%s\"},\"favicon\":\"\"}",
